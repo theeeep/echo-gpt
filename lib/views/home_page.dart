@@ -1,7 +1,9 @@
 import 'package:echo_gpt/core/themes/theme_notifier.dart';
 import 'package:echo_gpt/views/message.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -18,6 +20,29 @@ class _HomePageState extends ConsumerState<HomePage> {
     Message(text: "Great and you ?", isUser: true),
     Message(text: "Me too", isUser: false),
   ];
+
+  geminiModel() async {
+    try {
+      if (_controller.text.isNotEmpty) {
+        _message.add(Message(text: _controller.text, isUser: true));
+      }
+      final model = GenerativeModel(
+          model: 'gemini-pro', apiKey: dotenv.env['GEMINI_API_KEY']!);
+
+      final prompt = _controller.text.trim();
+
+      final content = [Content.text(prompt)];
+
+      final response = await model.generateContent(content);
+
+      setState(() {
+        _message.add(Message(text: response.text!, isUser: false));
+      });
+      _controller.clear();
+    } catch (e) {
+      debugPrint('Error:${e.toString()}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +169,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        geminiModel();
+                      },
                       child: Image.asset(
                         'assets/Send.png',
                         height: 30,
