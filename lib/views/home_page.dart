@@ -14,17 +14,15 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   final _controller = TextEditingController();
-  final List<Message> _message = [
-    Message(text: "Hi", isUser: true),
-    Message(text: "Hello, what's up ?", isUser: false),
-    Message(text: "Great and you ?", isUser: true),
-    Message(text: "Me too", isUser: false),
-  ];
+  final List<Message> _message = [];
+
+  bool _isLoading = false;
 
   geminiModel() async {
     try {
       if (_controller.text.isNotEmpty) {
         _message.add(Message(text: _controller.text, isUser: true));
+        _isLoading = true;
       }
       final model = GenerativeModel(
           model: 'gemini-pro', apiKey: dotenv.env['GEMINI_API_KEY']!);
@@ -37,6 +35,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
       setState(() {
         _message.add(Message(text: response.text!, isUser: false));
+        _isLoading = false;
       });
       _controller.clear();
     } catch (e) {
@@ -166,20 +165,29 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        geminiModel();
-                      },
-                      child: Image.asset(
-                        'assets/Send.png',
-                        height: 30,
-                        width: 30,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ),
+                  _isLoading
+                      ? const Padding(
+                          padding: EdgeInsets.all(8),
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              geminiModel();
+                            },
+                            child: Image.asset(
+                              'assets/Send.png',
+                              height: 30,
+                              width: 30,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
