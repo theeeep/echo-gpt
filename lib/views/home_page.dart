@@ -1,14 +1,16 @@
+import 'package:echo_gpt/core/themes/theme_notifier.dart';
 import 'package:echo_gpt/views/message.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   final _controller = TextEditingController();
   final List<Message> _message = [
     Message(text: "Hi", isUser: true),
@@ -19,6 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTheme = ref.watch(themeProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -44,12 +47,20 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            Image.asset(
-              'assets/VolumeUp.png',
-              height: 30,
-              width: 30,
-              color: Theme.of(context).colorScheme.primary,
-            )
+            GestureDetector(
+              onTap: () {
+                ref.read(themeProvider.notifier).toggleTheme();
+              },
+              child: (currentTheme == ThemeMode.dark)
+                  ? Image.asset('assets/theme.png',
+                      height: 25,
+                      width: 25,
+                      color: Theme.of(context).colorScheme.secondary)
+                  : Image.asset('assets/theme.png',
+                      height: 25,
+                      width: 25,
+                      color: Theme.of(context).colorScheme.primary),
+            ),
           ],
         ),
       ),

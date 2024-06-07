@@ -11,8 +11,8 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
       state = ThemeMode.light;
     }
   }
-
-  final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
-    return ThemeNotifier();
-  });
 }
+
+final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
+  return ThemeNotifier();
+});

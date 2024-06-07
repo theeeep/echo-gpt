@@ -20,7 +20,7 @@ class OnboardingPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green,
+                    color: Colors.blue,
                   ),
                 ),
                 SizedBox(height: 16),
