@@ -1,4 +1,5 @@
-import 'package:echo_gpt/views/home_page.dart';
+import 'package:echo_gpt/core/themes/themes.dart';
+import 'package:echo_gpt/views/onboarding_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,11 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Echo GPT',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
+      theme: lightMode,
+      darkTheme: darkMode,
+      home: const OnboardingPage(),
     );
   }
 }
