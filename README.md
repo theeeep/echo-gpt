@@ -1,4 +1,4 @@
-# EchoGPT Project Documentation
+# EchoGPT 
 
 ## Introduction
 
