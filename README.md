@@ -31,10 +31,9 @@ EchoGPT is designed to offer seamless interaction with users, providing response
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-repo/EchoGPT.git
-   cd EchoGPT
+   git clone https://github.com/theeeep/echo-gpt
+   cd echo-gpt
    ```
-
 
 ## Features
 
